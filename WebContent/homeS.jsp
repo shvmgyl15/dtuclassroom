@@ -103,11 +103,11 @@
 								Dashboard</a></li>
 						<li><a href="NoteSD.jsp"><i class="fa fa-list-alt fa-fw"></i>
 								Notice Board</a>
-						<li><a href="tables.html"><i class="fa fa-calendar fa-fw"></i>
+						<li><a href="#"><i class="fa fa-calendar fa-fw"></i>
 								Calendar</a></li>
 						<li><a href="Download.jsp"><i
 								class="fa fa-download fa-fw"></i> Downloads</a></li>
-						<li><a href="forms.html"><i
+						<li><a href="#"><i
 								class="fa fa-bar-chart-o fa-fw"></i> Polls</a>
 					</ul>
 				</div>

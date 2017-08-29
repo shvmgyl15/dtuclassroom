@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="com.ConnectionClass" %>
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge; charset=utf-8">
@@ -146,24 +147,13 @@
 											name="b" style="" class="form-control">
 											<option id="NA" value="n">Select Batch</option>
 											<%
-												try {
-													String query;
-													Class.forName("oracle.jdbc.driver.OracleDriver");
-													Connection con = DriverManager.getConnection(
-															"jdbc:oracle:thin:@localhost:1521:xe", "system",
-															"system");
-													Statement st = con.createStatement();
-													query = "select BNAME from BATCHES where TNAME='" + u + "'";
-													ResultSet rs = st.executeQuery(query);
-													System.out.println(query);
-													while (rs.next()) {
-														String x = rs.getString("BNAME");
+												String query = "select BNAME from BATCHES where TNAME='" + u + "'";
+												ResultSet rs = ConnectionClass.getInstance().getResultSet(query);
+												while (rs.next()) {
+													String x = rs.getString("BNAME");
 											%>
 											<option id="<%=x%>" value="<%=x%>"><%=x%></option>
 											<%
-												}
-													con.close();
-												} catch (Exception e) {
 												}
 											%>
 										</select>
@@ -211,37 +201,23 @@
 										</tr>
 									</thead>
 									<%
-										try {
-											String query;
-											Class.forName("oracle.jdbc.driver.OracleDriver");
-											Connection con = DriverManager.getConnection(
-													"jdbc:oracle:thin:@localhost:1521:xe", "system",
-													"system");
-											Statement st = con.createStatement();
-											query = "select * from TEACHERS where TNAME='" + u + "' ORDER BY DATE_TIME DESC";
-											ResultSet rs = st.executeQuery(query);
+										query = "select * from TEACHERS where TNAME='" + u + "' ORDER BY DATE_TIME DESC";
+										rs = ConnectionClass.getInstance().getResultSet(query);
 									%><tbody>
-										<%
-											while (rs.next()) {
-										%>
+									<%
+										while (rs.next()) {
+									%>
 										<tr>
 											<td><%=rs.getString(rs.findColumn("BNAME"))%></td>
 											<td><%=rs.getString(rs.findColumn("SUB"))%></td>
 											<td><%=rs.getString(rs.findColumn("DATE_TIME"))%></td>
 											<td><%=rs.getString(rs.findColumn("NOTICE"))%></td>
 										</tr>
-										<%
-											}
-											con.close();
-										%>
+									<%
+										}
+									%>
 									</tbody>
 								</table>
-								<%
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								%>
-
 							</div>
 						</div>
 						<!-- /.panel-body -->

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<%@page import="java.sql.*" %>
+<%@page import="java.sql.ResultSet" %>
+<%@page import="com.ConnectionClass"%>
 
 <%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 <%@ page import="javax.servlet.http.*"%>
@@ -47,19 +48,10 @@
 					String fieldName = fi.getFieldName();
 					fileName = fi.getName();
 					//check if a file with same name exists already on server
-					try {
-						Class.forName("oracle.jdbc.driver.OracleDriver");
-						Connection con = DriverManager.getConnection(
-								"jdbc:oracle:thin:@localhost:1521:xe",
-								"system", "system");
-						Statement st = con.createStatement();
-						ResultSet rs = st
-								.executeQuery("select FILENAME from UPLOADED_FILES");
-						while(rs.next()){
-							files.add(rs.getString("FILENAME").toLowerCase());
-						}
-						con.close();
-					} catch (Exception e) {
+					String query = "select FILENAME from UPLOADED_FILES";
+					ResultSet rs = ConnectionClass.getInstance().getResultSet(query);
+					while(rs.next()){
+						files.add(rs.getString("FILENAME").toLowerCase());
 					}
 					if(files.contains(fileName.toLowerCase())){
 						%>
@@ -83,29 +75,15 @@
 										.lastIndexOf("\\") + 1));
 					}
 					fi.write(file);
-					try {
-						Class.forName("oracle.jdbc.driver.OracleDriver");
-						Connection con = DriverManager.getConnection(
-								"jdbc:oracle:thin:@localhost:1521:xe",
-								"system", "system");
-						Statement st = con.createStatement();
-						st.executeUpdate("INSERT INTO UPLOADED_FILES VALUES('"+u+"','"+fileName+"',SYSDATE)");
-						con.close();
-					} catch (Exception e) {
-						%>
-						<script>	
-						alert('File upload successful, some internal error occured, kindly rename the file and try uploading again');	
-						window.location.href='Upload.jsp';	
-						</script>	
-						<%
-					}
+					query = "INSERT INTO UPLOADED_FILES VALUES('" + u + "','" + fileName + "',SYSDATE)";
+					ConnectionClass.getInstance().updateDb(query);
+						
 					%>
 					<script>	
 					alert('File uploaded successfully');	
 					window.location.href='Upload.jsp';	
 					</script>	
 					<%
-					
 				}
 			}
 		} catch (Exception ex) {

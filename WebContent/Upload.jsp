@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="com.ConnectionClass"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,11 +146,11 @@
 								Dashboard</a></li>
 						<li><a href="NoteT.jsp"><i class="fa fa-list-alt fa-fw"></i>
 								Notice Board</a></li>
-						<li><a href="tables.html"><i class="fa fa-calendar fa-fw"></i>
+						<li><a href="#"><i class="fa fa-calendar fa-fw"></i>
 								Calendar</a></li>
 						<li><a href="Upload.jsp"><i class="fa fa-upload fa-fw"></i>
 								Upload Files</a></li>
-						<li><a href="forms.html"><i
+						<li><a href="#"><i
 								class="fa fa-bar-chart-o fa-fw"></i> Polls</a>
 					</ul>
 				</div>
@@ -203,25 +204,14 @@
 											name="f" style="" class="form-control">
 											<option id="NAF" value="n">Select File</option>
 											<%
-												try {
-													String query;
-													Class.forName("oracle.jdbc.driver.OracleDriver");
-													Connection con = DriverManager.getConnection(
-															"jdbc:oracle:thin:@localhost:1521:xe", "system",
-															"system");
-													Statement st = con.createStatement();
-													query = "select FILENAME from UPLOADED_FILES where TNAME='" + u
-															+ "' ORDER BY DATE_TIME DESC";
-													ResultSet rs = st.executeQuery(query);
-													System.out.println(query);
-													while (rs.next()) {
-														String x = rs.getString("FILENAME");
+												String query = "select FILENAME from UPLOADED_FILES where TNAME='" + u
+														+ "' ORDER BY DATE_TIME DESC";
+												ResultSet rs = ConnectionClass.getInstance().getResultSet(query);
+												while (rs.next()) {
+													String x = rs.getString("FILENAME");
 											%>
 											<option id="<%=x%>" value="<%=x%>"><%=x%></option>
 											<%
-												}
-													con.close();
-												} catch (Exception e) {
 												}
 											%>
 										</select>
@@ -231,24 +221,13 @@
 											name="b" style="" class="form-control">
 											<option id="NA" value="n">Select Batch</option>
 											<%
-												try {
-													String query;
-													Class.forName("oracle.jdbc.driver.OracleDriver");
-													Connection con = DriverManager.getConnection(
-															"jdbc:oracle:thin:@localhost:1521:xe", "system",
-															"system");
-													Statement st = con.createStatement();
-													query = "select BNAME from BATCHES where TNAME='" + u + "'";
-													ResultSet rs = st.executeQuery(query);
-													System.out.println(query);
-													while (rs.next()) {
-														String x = rs.getString(rs.findColumn("BNAME"));
+												query = "select BNAME from BATCHES where TNAME='" + u + "'";
+												rs = ConnectionClass.getInstance().getResultSet(query);
+												while (rs.next()) {
+													String x = rs.getString(rs.findColumn("BNAME"));
 											%>
 											<option id="<%=x%>" value="<%=x%>"><%=x%></option>
 											<%
-												}
-													con.close();
-												} catch (Exception e) {
 												}
 											%>
 										</select>
@@ -283,55 +262,34 @@
 										</tr>
 									</thead>
 									<%
-										try {
-											String query;
-											Class.forName("oracle.jdbc.driver.OracleDriver");
-											Connection con = DriverManager.getConnection(
-													"jdbc:oracle:thin:@localhost:1521:xe", "system",
-													"system");
-											Statement st = con.createStatement();
-											query = "select * from UPLOADED_FILES where TNAME='" + u
+										query = "select * from UPLOADED_FILES where TNAME='" + u
 													+ "' ORDER BY DATE_TIME DESC";
-											ResultSet rs = st.executeQuery(query);
+										rs = ConnectionClass.getInstance().getResultSet(query);
 									%><tbody>
-										<%
-											while (rs.next()) {
-												String fName = rs.getString("FILENAME");
-												String s="";
-												query = "select BNAME from SHARED where FILENAME='" + fName
-														+ "' ORDER BY DATE_TIME DESC";
-												System.out.println(query);
-												Class.forName("oracle.jdbc.driver.OracleDriver");
-												Connection co = DriverManager.getConnection(
-														"jdbc:oracle:thin:@localhost:1521:xe", "system",
-														"system");
-												Statement t = con.createStatement();
-												
-												ResultSet r = t.executeQuery(query);
-												while(r.next()){
-													s += r.getString("BNAME") + "<br>";
-												}
-												co.close();
-												if(!s.contains("<br>")){
-													s="-";
-												}
-										%>
+									<%
+										while (rs.next()) {
+											String fName = rs.getString("FILENAME");
+											String s="";
+											query = "select BNAME from SHARED where FILENAME='" + fName
+													+ "' ORDER BY DATE_TIME DESC";
+											ResultSet r = ConnectionClass.getInstance().getResultSet(query);
+											while(r.next()){
+												s += r.getString("BNAME") + "<br>";
+											}
+											if(!s.contains("<br>")){
+												s="-";
+											}
+									%>
 										<tr>
 											<td><%=fName%></td>
 											<td><%=rs.getString("DATE_TIME")%></td>
 											<td><%=s%></td>
 										</tr>
-										<%
-											}
-												con.close();
-										%>
+									<%
+										}
+									%>
 									</tbody>
 								</table>
-								<%
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								%>
 							</div>
 						</div>
 					</div>

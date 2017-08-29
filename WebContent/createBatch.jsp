@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.sql.*" %>
-<%@ page import="com.PasswordHash" %>
+<%@ page import="com.ConnectionClass" %>
 <%
 
 String u=session.getAttribute("user").toString();
@@ -29,33 +28,18 @@ if(b.equals("A")||b.equals("B")){
 	bno = 0;
 }
 
-String query = "INSERT INTO BATCHES VALUES('"+u+"','"+bname+"',"+yr+",'"+b+"',"+bno+","+sRoll+","+eRoll+")";
-try
-{
-	Class.forName("oracle.jdbc.driver.OracleDriver");
-	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","system");
-	Statement st=con.createStatement();
-	int x=st.executeUpdate(query);
-	if(x>0){
-		%>
-		<script>	
-		alert("BATCH created successfully!");	
-		window.location.href='homeT.jsp';	
-		</script>	
-		<%
-	}
-	else
-		out.println("BATCH '"+bname+"' creation failed!");
-	con.close();
-}
-catch(Exception ex)
-{
+String query = "INSERT INTO BATCHES VALUES('" + u + "','" + bname + "'," + yr + ",'" + b + "'," + bno + "," + sRoll + "," + eRoll + ")";
+
+if(ConnectionClass.getInstance().updateDb(query)){
 	%>
 	<script>	
-	alert("BATCH creation failed!");	
+	alert("BATCH created successfully!");	
 	window.location.href='homeT.jsp';	
 	</script>	
 	<%
+}
+else {
+	out.println("BATCH '" + bname + "' creation failed!");
 }
 
 %>

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="com.ConnectionClass"%>
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge; charset=utf-8">
@@ -110,11 +111,11 @@
 								Dashboard</a></li>
 						<li><a href="NoteSD.jsp"><i class="fa fa-list-alt fa-fw"></i>
 								Notice Board</a>
-						<li><a href="tables.html"><i class="fa fa-calendar fa-fw"></i>
+						<li><a href="#"><i class="fa fa-calendar fa-fw"></i>
 								Calendar</a></li>
 						<li><a href="Download.jsp"><i
 								class="fa fa-download fa-fw"></i> Downloads</a></li>
-						<li><a href="forms.html"><i
+						<li><a href="#"><i
 								class="fa fa-bar-chart-o fa-fw"></i> Polls</a>
 					</ul>
 				</div>
@@ -149,30 +150,21 @@
 										</tr>
 									</thead>
 									<%
-										try {
-											String query;
-											Class.forName("oracle.jdbc.driver.OracleDriver");
-											Connection con = DriverManager.getConnection(
-													"jdbc:oracle:thin:@localhost:1521:xe", "system",
-													"system");
-											Statement st = con.createStatement();
-											query = "SELECT YEAR, BATCH, BNO, ROLLNO FROM STUDENTS WHERE UNAME = '"
-													+ u + "'";
-											System.out.println(query);
-											ResultSet r = st.executeQuery(query);
-											r.next();
-											int y = r.getInt(r.findColumn("YEAR"));
-											int bn = r.getInt(r.findColumn("BNO"));
-											int roll = r.getInt(r.findColumn("ROLLNO"));
-											String b = r.getString(r.findColumn("BATCH"));
-											String q1 = "select TNAME||BNAME from BATCHES where YEAR = " + y
-													+ " AND BATCH = '" + b + "' AND BNO = " + bn + " AND "
-													+ roll + " BETWEEN ST_ROLL AND EN_ROLL";
-											System.out.println(q1);
-											query = "select SUB, DATE_TIME, NOTICE, TNAME from TEACHERS where TNAME||BNAME IN ("
-													+ q1 + ") ORDER BY DATE_TIME DESC";
-											System.out.println(query);
-											ResultSet rs = st.executeQuery(query);
+										String query = "SELECT YEAR, BATCH, BNO, ROLLNO FROM STUDENTS WHERE UNAME = '"
+												+ u + "'";
+										ResultSet r = ConnectionClass.getInstance().getResultSet(query);
+										r.next();
+										int y = r.getInt(r.findColumn("YEAR"));
+										int bn = r.getInt(r.findColumn("BNO"));
+										int roll = r.getInt(r.findColumn("ROLLNO"));
+										String b = r.getString(r.findColumn("BATCH"));
+										String q1 = "select TNAME||BNAME from BATCHES where YEAR = " + y
+												+ " AND BATCH = '" + b + "' AND BNO = " + bn + " AND "
+												+ roll + " BETWEEN ST_ROLL AND EN_ROLL";
+										System.out.println(q1);
+										query = "select SUB, DATE_TIME, NOTICE, TNAME from TEACHERS where TNAME||BNAME IN ("
+												+ q1 + ") ORDER BY DATE_TIME DESC";
+										ResultSet rs = ConnectionClass.getInstance().getResultSet(query);
 									%><tbody>
 										<%
 											while (rs.next()) {
@@ -185,17 +177,9 @@
 										</tr>
 										<%
 											}
-												con.close();
 										%>
 									</tbody>
 								</table>
-								<%
-									} catch (Exception e) {
-										e.printStackTrace();
-										out.println("ERROR");
-									}
-								%>
-
 							</div>
 						</div>
 						<!-- /.panel-body -->

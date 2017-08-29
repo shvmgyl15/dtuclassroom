@@ -145,11 +145,11 @@
 								Dashboard</a></li>
 						<li><a href="NoteT.jsp"><i class="fa fa-list-alt fa-fw"></i>
 								Notice Board</a></li>
-						<li><a href="tables.html"><i class="fa fa-calendar fa-fw"></i>
+						<li><a href="#"><i class="fa fa-calendar fa-fw"></i>
 								Calendar</a></li>
 						<li><a href="Upload.jsp"><i class="fa fa-upload fa-fw"></i>
 								Upload Files</a></li>
-						<li><a href="forms.html"><i
+						<li><a href="#"><i
 								class="fa fa-bar-chart-o fa-fw"></i> Polls</a>
 					</ul>
 				</div>
