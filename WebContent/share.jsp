@@ -19,7 +19,7 @@ try{
 String b = request.getParameter("b");
 String f = request.getParameter("f");
 
-String query = "INSERT INTO SHARED VALUES('" + u + "','" + f + "','" + b + "',SYSDATE)";
+String query = "INSERT INTO SHARED VALUES('" + u + "','" + f + "','" + b + "',SYSDATE())";
 
 if(ConnectionClass.getInstance().updateDb(query)){
 	%>

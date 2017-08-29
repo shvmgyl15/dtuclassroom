@@ -12,7 +12,7 @@
 <%
 String n=request.getParameter("q");
 
-ResultSet rs = ConnectionClass.getInstance().getResultSet("select NAME from USERS where UNAME='"+n+"'");
+ResultSet rs = ConnectionClass.getInstance().getResultSet("select NAME from USERS where UNAME='" + n + "'");
 if(rs.next()){
 	out.println("Username Not Available");
 }

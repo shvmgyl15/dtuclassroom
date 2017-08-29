@@ -8,7 +8,7 @@
     <description>Location to store uploaded file</description>
     <param-name>file-upload</param-name>
     <param-value>
-         C:\Development\TomCat7\webapps\data\
+         /Users/shivam/Downloads/Untitled/
      </param-value>
   </context-param>
 </web-app>

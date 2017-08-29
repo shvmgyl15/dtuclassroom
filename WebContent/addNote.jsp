@@ -22,7 +22,7 @@ tA = tA.replaceAll("\r\n", "<br>");
 tA = tA.replaceAll("\n", "<br>");
 String sub = request.getParameter("sub");
 
-String query = "INSERT INTO TEACHERS VALUES('" + u + "','" + b + "','" + sub + "','" + tA + "',SYSDATE)";
+String query = "INSERT INTO TEACHERS VALUES('" + u + "','" + b + "','" + sub + "','" + tA + "',SYSDATE())";
 
 if(ConnectionClass.getInstance().updateDb(query)){
 	%>

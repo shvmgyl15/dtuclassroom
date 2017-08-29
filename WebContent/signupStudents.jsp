@@ -24,7 +24,7 @@ if(b.equals("A") || b.equals("B")){
 	bno = 0;
 }
 
-String query = "insert into USERS values('" + n + "' , '" + h + "','" + name + "','" + sex + "',TO_DATE('" + d + "', 'YYYY-MM-DD'),'" + e + "'," + mb + ",'" + dn + "')";
+String query = "insert into USERS values('" + n + "' , '" + h + "','" + name + "','" + sex + "',STR_TO_DATE('" + d + "', '%Y-%m-%d'),'" + e + "'," + mb + ",'" + dn + "')";
 if(ConnectionClass.getInstance().updateDb(query)){
 	out.println("USERNAME AND EMAIL ID accepted");
 }

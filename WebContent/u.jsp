@@ -28,7 +28,7 @@
 		// maximum size that will be stored in memory
 		factory.setSizeThreshold(maxMemSize);
 		// Location to save data that is larger than maxMemSize.
-		factory.setRepository(new File("c:\\temp"));
+		factory.setRepository(new File(filePath));
 
 		// Create a new file upload handler
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -65,17 +65,17 @@
 					boolean isInMemory = fi.isInMemory();
 					long sizeInBytes = fi.getSize();
 					// Write the file
-					if (fileName.lastIndexOf("\\") >= 0) {
+					if (fileName.lastIndexOf("/") >= 0) {
 						file = new File(filePath
 								+ fileName.substring(fileName
-										.lastIndexOf("\\")));
+										.lastIndexOf("/")));
 					} else {
 						file = new File(filePath
 								+ fileName.substring(fileName
-										.lastIndexOf("\\") + 1));
+										.lastIndexOf("/") + 1));
 					}
 					fi.write(file);
-					query = "INSERT INTO UPLOADED_FILES VALUES('" + u + "','" + fileName + "',SYSDATE)";
+					query = "INSERT INTO UPLOADED_FILES VALUES('" + u + "','" + fileName + "',SYSDATE())";
 					ConnectionClass.getInstance().updateDb(query);
 						
 					%>

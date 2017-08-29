@@ -14,7 +14,7 @@ String mb = request.getParameter("mb");
 String d = request.getParameter("dob");
 String dn = request.getParameter("dsgntn");
 
-String query = "insert into USERS values('" + n + "' , '" + h + "','" + name + "','" + sex + "',TO_DATE('" + d + "', 'YYYY-MM-DD'),'" + e + "'," + mb + ",'" + dn + "')";
+String query = "insert into USERS values('" + n + "' , '" + h + "','" + name + "','" + sex + "',STR_TO_DATE('" + d + "', '%Y-%m-%d'),'" + e + "'," + mb + ",'" + dn + "')";
 
 if(ConnectionClass.getInstance().updateDb(query)){
 	%>
